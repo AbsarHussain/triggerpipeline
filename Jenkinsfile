@@ -34,6 +34,23 @@ pipeline {
                 }
             }
         }
+        stage('Print Webhook Metadata') {
+            steps {
+                script {
+                    // Print general webhook metadata using environment variables
+                    echo "Webhook event: ${env.GIT_URL}"
+                    echo "Repository: ${env.GIT_COMMITTER_NAME}"
+                    echo "Commit ID: ${env.GIT_COMMITTER_EMAIL}"
+                    echo "Branch: ${env.BRANCH_NAME}"
+                    echo "GitHub Event: ${env.GITHUB_EVENT_NAME}"  // GitHub event type (e.g., push, pull_request)
+                    echo "GitHub Ref: ${env.GITHUB_REF}"  // Git reference (e.g., refs/heads/main)
+
+                    // If more metadata is available (depending on your GitHub webhook payload)
+                    echo "Commit message: ${env.GIT_AUTHOR_NAME}" 
+                    echo "Commit hash: ${env.GIT_COMMIT}"
+                }
+            }
+        }
         stage('Build') {
             steps {
                 echo "Building the project for tag: ${GIT_TAG}"
