@@ -18,7 +18,22 @@ pipeline {
                 }
             }
         }
+        stage('Check Push Type') {
+            steps {
+                script {
+                    // Get the Git tag (if any) and the current branch
+                    def gitTag = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
+                    def currentBranch = env.BRANCH_NAME
 
+                    // Check if the push is a Git tag or a branch push
+                    if (gitTag) {
+                        echo "Git Tag Push detected: ${gitTag}"
+                    } else {
+                        echo "Git Branch Push detected to branch: ${currentBranch}"
+                    }
+                }
+            }
+        }
         stage('Build') {
             steps {
                 echo "Building the project for tag: ${GIT_TAG}"
