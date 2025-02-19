@@ -4,7 +4,6 @@ pipeline {
         // This trigger listens to GitHub events, specifically tag pushes.
         githubPush()
     }
-
     environment {
         GIT_TAG = ""
     }
