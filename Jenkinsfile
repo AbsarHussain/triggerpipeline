@@ -7,7 +7,6 @@ pipeline {
     environment {
         GIT_TAG = ""
     }
-
     stages {
         stage('Checkout') {
             steps {
