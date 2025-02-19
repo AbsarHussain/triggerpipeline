@@ -1,0 +1,28 @@
+name: Trigger on Tag Push
+
+on:
+  push:
+    tags:
+      - '*'  # Triggers on any tag push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures all tags are fetched
+
+      - name: Display Tag
+        run: echo "Triggered by tag: ${{ github.ref }}"
+
+      - name: Extract Tag Name
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Build (Example Step)
+        run: echo "Building for tag $TAG_NAME"
+
+      - name: Deploy (Example Step)
+        run: echo "Deploying version $TAG_NAME"
