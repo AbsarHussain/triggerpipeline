@@ -18,7 +18,6 @@ pipeline {
                 }
             }
         }
-        
         stage('Check Push Type') {
             steps {
                 script {
