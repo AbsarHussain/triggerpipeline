@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     triggers {
         // This trigger listens to GitHub events, specifically tag pushes.
         githubPush()
