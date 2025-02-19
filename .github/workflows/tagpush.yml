@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0  # Ensures all tags are fetched
 
       - name: Display Tag
-        run: echo "Triggered by "
+        run: echo "Triggered by tag ${{ github.ref }}"
 
       - name: Extract Tag Name
         run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
