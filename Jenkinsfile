@@ -1,38 +1,45 @@
 pipeline {
     agent any
+
     triggers {
-        // Trigger the pipeline when a GitHub push event happens (including tags)
-        githubPush() 
+        // This trigger listens to GitHub events, specifically tag pushes.
+        githubPush()
     }
+
+    environment {
+        GIT_TAG = ""
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the repository to access the Git history
-                checkout scm
-            }
-        }
-        stage('Check for Git Tag') {
-            steps {
                 script {
-                    // Get the latest Git tag (if any)
-                    def gitTag = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
-                    
-                    // If a tag exists, print it
-                    if (gitTag) {
-                        echo "The pushed Git tag is: ${gitTag}"
-                    } else {
-                        echo "No Git tag found in the current commit."
-                    }
+                    // Checkout the code
+                    checkout scm
+                    // Capture the tag name, if it's a tag push
+                    GIT_TAG = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
                 }
             }
         }
-    }
-    post {
-        success {
-            echo 'Pipeline completed successfully.'
+
+        stage('Build') {
+            steps {
+                echo "Building the project for tag: ${GIT_TAG}"
+                // Your build steps go here
+            }
         }
-        failure {
-            echo 'Pipeline failed.'
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying the project for tag: ${GIT_TAG}"
+                // Your deploy steps go here
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished.'
         }
     }
 }
